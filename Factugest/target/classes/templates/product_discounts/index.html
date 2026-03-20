@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title>Product Discounts</title></head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="h3 mb-1 text-gray-800 fw-bold">
+                <i class="bi bi-tags-fill text-primary me-2"></i>Product - Discount Relations
+            </h1>
+            <p class="text-muted mb-0 small">Manage and track your product discounts.</p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+        <div class="card-header bg-white py-3 border-bottom border-light">
+            <h6 class="m-0 font-weight-bold text-primary">All Product Discounts</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive" th:if="${not #lists.isEmpty(all_product_discounts)}">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr class="text-uppercase small fw-bold" style="letter-spacing: 0.5px;">
+                            <th scope="col" class="ps-4">Product Name</th>
+                            <th scope="col">Discount Applied</th>
+                            <th scope="col">Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-top-0">
+                        <tr th:each="pd : ${all_product_discounts}" style="transition: all 0.2s;">
+                            <td class="ps-4 text-dark fw-bold" th:text="${pd.nombre_producto}"></td>
+                            <td th:text="${pd.descuento_aplicado}"></td>
+                            <td>
+                                <span class="badge rounded-pill bg-success-subtle text-success px-3 border border-success-subtle"
+                                      th:text="${pd.porcentaje + '%'}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${#lists.isEmpty(all_product_discounts)}" class="p-5 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light border mb-3"
+                     style="width: 64px; height: 64px;">
+                    <i class="bi bi-info-circle text-primary fs-3"></i>
+                </div>
+                <h5 class="fw-bold mb-1">No product discounts registered</h5>
+                <p class="text-muted mb-4">No product discount records were found in the database.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3 text-end">
+        <p class="text-muted small">Showing <span th:text="${#lists.size(all_product_discounts)}">0</span> records found in database.</p>
+    </div>
+
+    <div class="mt-3 d-flex justify-content-center align-items-center">
+        <a th:href="@{/}" class="btn btn-light border px-4 py-2" style="border-radius: 8px;">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+</div>
+</section>
+</body>
+</html>

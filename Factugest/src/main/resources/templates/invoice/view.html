@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="'Factura #' + ${invoice.cod_factura}">Factura</title>
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-bold mb-1">
+                <i class="bi bi-file-earmark-text text-primary me-2"></i>
+                <span th:if="${invoice.tipo_factura == 'NC'}">Nota Crédito</span>
+                <span th:if="${invoice.tipo_factura == 'ND'}">Nota Débito</span>
+                <span th:if="${invoice.tipo_factura != 'NC' and invoice.tipo_factura != 'ND'}">Factura de Venta</span>
+                #<span th:text="${invoice.cod_factura}"></span>
+            </h1>
+            <p class="text-muted small mb-0"
+               th:text="${invoice.fecha != null ? #temporals.format(invoice.fecha, 'dd/MM/yyyy HH:mm') : 'N/A'}"></p>
+        </div>
+        <div class="d-flex gap-2">
+            <a th:href="@{/invoice/{id}/pdf(id=${invoice.cod_factura})}"
+               class="btn btn-danger shadow-sm d-flex align-items-center gap-2" target="_blank"
+               style="border-radius: 8px; font-weight: 600;">
+                <i class="bi bi-file-pdf"></i> Descargar PDF
+            </a>
+            <a th:href="@{/invoice}" class="btn btn-light border" style="border-radius: 8px;">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <!-- Info principal -->
+        <div class="col-xl-8">
+
+            <!-- Encabezado empresa -->
+            <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold text-primary mb-1" th:text="${invoice.empresa_nombre}"></h5>
+                            <p class="text-muted small mb-0">NIT: <span th:text="${invoice.empresa_nit}"></span></p>
+                            <p class="text-muted small mb-0">
+                                <span th:text="${invoice.empresa_direccion}"></span> ·
+                                <span th:text="${invoice.empresa_ciudad}"></span>
+                            </p>
+                            <p class="text-muted small mb-0">Tel: <span th:text="${invoice.empresa_telefono}"></span></p>
+                            <p class="text-muted small" th:text="${invoice.empresa_correo}"></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h4 class="fw-bold text-primary">
+                                <span th:if="${invoice.tipo_factura == 'NC'}">NOTA CRÉDITO</span>
+                                <span th:if="${invoice.tipo_factura == 'ND'}">NOTA DÉBITO</span>
+                                <span th:if="${invoice.tipo_factura != 'NC' and invoice.tipo_factura != 'ND'}">FACTURA ELECTRÓNICA</span>
+                            </h4>
+                            <p class="mb-0 text-muted small">N° <span class="fw-bold text-dark" th:text="${invoice.cod_factura}"></span></p>
+                            <p class="mb-0 text-muted small">
+                                Fecha: <span th:text="${invoice.fecha != null ? #temporals.format(invoice.fecha, 'dd/MM/yyyy') : 'N/A'}"></span>
+                            </p>
+                            <p th:if="${invoice.fecha_vencimiento != null}" class="mb-0 text-muted small">
+                                Vence: <span th:text="${#temporals.format(invoice.fecha_vencimiento, 'dd/MM/yyyy')}"></span>
+                            </p>
+                            <p class="mb-0 text-muted small">Cajero: <span th:text="${invoice.usuario_nombre}"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info cliente -->
+            <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
+                <div class="card-header bg-white border-bottom border-light py-3">
+                    <h6 class="m-0 fw-bold text-primary">Datos del Cliente</h6>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1 fw-bold" th:text="${invoice.cliente_nombre}"></p>
+                            <p class="text-muted small mb-0">
+                                <span th:text="${invoice.document_type}"></span>: <span th:text="${invoice.document_number}"></span>
+                            </p>
+                            <p class="text-muted small mb-0" th:text="${invoice.cliente_email}"></p>
+                            <p class="text-muted small" th:text="${invoice.cliente_address}"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1 small text-muted fw-bold text-uppercase">Método de Pago</p>
+                            <p class="mb-1" th:text="${invoice.metodo_pago_nombre}"></p>
+                            <p th:if="${invoice.cliente_regimen != null}" class="mb-1 small text-muted">
+                                Régimen: <span th:text="${#strings.replace(invoice.cliente_regimen, '_', ' ')}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detalle productos -->
+            <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header bg-white border-bottom border-light py-3">
+                    <h6 class="m-0 fw-bold text-primary">Productos / Servicios</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr class="text-uppercase small fw-bold" style="letter-spacing: 0.4px; font-size: 0.7rem;">
+                                    <th class="ps-4">Producto</th>
+                                    <th>SKU</th>
+                                    <th class="text-end">P. Unit.</th>
+                                    <th class="text-center">Cant.</th>
+                                    <th class="text-end">Desc %</th>
+                                    <th class="text-end">Base Grav.</th>
+                                    <th class="text-end">IVA</th>
+                                    <th class="text-end pe-4">Total Línea</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border-top-0">
+                                <tr th:if="${#lists.isEmpty(details)}">
+                                    <td colspan="8" class="text-center py-4 text-muted">Sin detalle registrado.</td>
+                                </tr>
+                                <tr th:each="d : ${details}">
+                                    <td class="ps-4" th:text="${d.producto_nombre}"></td>
+                                    <td><span class="badge bg-light text-dark border font-monospace" th:text="${d.sku}"></span></td>
+                                    <td class="text-end">$<span th:text="${#numbers.formatDecimal(d.precio_unitario, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                                    <td class="text-center" th:text="${d.cantidad}"></td>
+                                    <td class="text-end text-danger">
+                                        <span th:if="${d.descuento_porcentaje != null and d.descuento_porcentaje > 0}"
+                                              th:text="${#numbers.formatDecimal(d.descuento_porcentaje, 0, 2) + '%'}"></span>
+                                        <span th:if="${d.descuento_porcentaje == null or d.descuento_porcentaje == 0}">—</span>
+                                    </td>
+                                    <td class="text-end">$<span th:text="${#numbers.formatDecimal(d.subtotal, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                                    <td class="text-end text-success">
+                                        <span th:if="${d.impuesto_valor != null and d.impuesto_valor > 0}">
+                                            $<span th:text="${#numbers.formatDecimal(d.impuesto_valor, 0, 'COMMA', 2, 'POINT')}"></span>
+                                            <span class="text-muted" style="font-size:0.75em;">(<span th:text="${#numbers.formatDecimal(d.impuesto_porcentaje, 0, 0)}"></span>%)</span>
+                                        </span>
+                                        <span th:if="${d.impuesto_valor == null or d.impuesto_valor == 0}">Exento</span>
+                                    </td>
+                                    <td class="text-end pe-4 fw-bold">
+                                        $<span th:text="${#numbers.formatDecimal(d.subtotal + (d.impuesto_valor ?: 0), 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top border-light py-3">
+                    <div class="d-flex justify-content-end">
+                        <div style="min-width: 280px;">
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span class="text-muted">Subtotal bruto:</span>
+                                <span class="fw-bold">$<span th:text="${#numbers.formatDecimal((invoice.subtotal ?: 0) + (invoice.total_descuentos ?: 0), 0, 'COMMA', 2, 'POINT')}"></span></span>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span class="text-muted">(-) Descuentos:</span>
+                                <span class="fw-bold text-danger">$<span th:text="${#numbers.formatDecimal(invoice.total_descuentos ?: 0, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span class="text-muted">Base gravable:</span>
+                                <span class="fw-bold">$<span th:text="${#numbers.formatDecimal(invoice.subtotal ?: 0, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span class="text-muted">(+) Impuestos:</span>
+                                <span class="fw-bold text-success">$<span th:text="${#numbers.formatDecimal(invoice.total_impuestos ?: 0, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                            </div>
+                            <hr class="my-1">
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="small text-muted text-uppercase fw-bold">Total a Pagar</span>
+                                <h4 class="fw-bold text-primary mb-0">$<span th:text="${#numbers.formatDecimal(invoice.total, 0, 'COMMA', 2, 'POINT')}"></span></h4>
+                            </div>
+                            <p th:if="${invoice.observaciones != null and invoice.observaciones != ''}"
+                               class="text-muted small mt-2 mb-0">
+                                <i class="bi bi-chat-left-text me-1"></i>
+                                <span th:text="${invoice.observaciones}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel lateral -->
+        <div class="col-xl-4">
+            <!-- Estado -->
+            <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
+                <div class="card-header bg-white border-bottom border-light py-3">
+                    <h6 class="m-0 fw-bold text-primary">Estado del Pago</h6>
+                </div>
+                <div class="card-body p-4">
+                    <span th:if="${#strings.toLowerCase(invoice.estado_pago ?: '') == 'paid'}"
+                          class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 fs-6 mb-3 d-block text-center">
+                        <i class="bi bi-check-circle me-1"></i> Pagado
+                    </span>
+                    <span th:if="${#strings.toLowerCase(invoice.estado_pago ?: '') == 'pending'}"
+                          class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 fs-6 mb-3 d-block text-center">
+                        <i class="bi bi-hourglass me-1"></i> Pendiente
+                    </span>
+                    <span th:if="${#strings.toLowerCase(invoice.estado_pago ?: '') == 'partially paid'}"
+                          class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-3 py-2 fs-6 mb-3 d-block text-center">
+                        Pago Parcial
+                    </span>
+                    <span th:if="${#strings.toLowerCase(invoice.estado_pago ?: '') == 'overdue'}"
+                          class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 fs-6 mb-3 d-block text-center">
+                        <i class="bi bi-exclamation-triangle me-1"></i> Vencido
+                    </span>
+                    <span th:if="${#strings.toLowerCase(invoice.estado_pago ?: '') == 'cancelled'}"
+                          class="badge bg-secondary-subtle text-secondary-emphasis border px-3 py-2 fs-6 mb-3 d-block text-center">
+                        Cancelado
+                    </span>
+                    <span th:if="${invoice.estado_pago == null
+                        or (#strings.toLowerCase(invoice.estado_pago) != 'paid'
+                        and #strings.toLowerCase(invoice.estado_pago) != 'pending'
+                        and #strings.toLowerCase(invoice.estado_pago) != 'partially paid'
+                        and #strings.toLowerCase(invoice.estado_pago) != 'overdue'
+                        and #strings.toLowerCase(invoice.estado_pago) != 'cancelled')}"
+                          class="badge bg-light text-dark border px-3 py-2 fs-6 mb-3 d-block text-center"
+                          th:text="${invoice.estado_pago}"></span>
+
+                    <form th:action="@{/invoice/{id}/status(id=${invoice.cod_factura})}" method="POST">
+                        <label class="form-label small fw-bold text-secondary">Cambiar Estado</label>
+                        <select name="cod_pago" class="form-select form-select-sm bg-light border-0 mb-2">
+                            <option th:each="p : ${pagos_factura}"
+                                    th:value="${p.codPagoFactura}"
+                                    th:text="${#strings.capitalize(p.status)}"
+                                    th:selected="${p.codPagoFactura == invoice.cod_pago}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary w-100">
+                            <i class="bi bi-arrow-repeat me-1"></i> Actualizar Estado
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-header bg-white border-bottom border-light py-3">
+                    <h6 class="m-0 fw-bold text-primary">Acciones</h6>
+                </div>
+                <div class="card-body p-3 d-grid gap-2">
+                    <a th:href="@{/invoice/{id}/pdf(id=${invoice.cod_factura})}"
+                       class="btn btn-danger d-flex align-items-center gap-2 justify-content-center" target="_blank">
+                        <i class="bi bi-file-pdf"></i> Descargar PDF
+                    </a>
+                    <a th:href="@{/invoice/delete/{id}(id=${invoice.cod_factura})}"
+                       class="btn btn-outline-danger d-flex align-items-center gap-2 justify-content-center"
+                       onclick="return confirm('¿Eliminar esta factura permanentemente?')">
+                        <i class="bi bi-trash"></i> Eliminar Factura
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+</body>
+</html>

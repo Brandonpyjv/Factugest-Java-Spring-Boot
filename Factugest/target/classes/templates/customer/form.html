@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${customer != null} ? 'Editar Cliente' : 'Nuevo Cliente'">Cliente</title>
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="h3 mb-1 fw-bold">
+            <i th:class="${customer != null} ? 'bi bi-person-pencil text-primary me-2' : 'bi bi-person-plus text-primary me-2'" class="bi text-primary me-2"></i>
+            <span th:text="${customer != null} ? 'Editar Cliente' : 'Nuevo Cliente'">Cliente</span>
+        </h1>
+        <p class="text-muted small mb-0" th:text="${customer != null} ? 'Modifica los datos del cliente.' : 'Ingresa los datos del nuevo cliente.'"></p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header bg-white py-3 border-bottom border-light">
+                    <h6 class="m-0 fw-bold text-primary">Información del Cliente</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="${customer != null} ? @{/customer/edit/{id}(id=${customer.customerId})} : @{/customer/new}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Nombre Completo *</label>
+                                <input type="text" name="full_name" class="form-control bg-light border-0" required
+                                       th:value="${customer?.fullName}" placeholder="Ej: Juan Carlos Pérez">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">Tipo Documento *</label>
+                                <select name="document_type" class="form-select bg-light border-0" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="C" th:selected="${customer?.documentType == 'C'}">C - Cédula</option>
+                                    <option value="E" th:selected="${customer?.documentType == 'E'}">E - Extranjero</option>
+                                    <option value="J" th:selected="${customer?.documentType == 'J'}">J - Jurídico</option>
+                                    <option value="G" th:selected="${customer?.documentType == 'G'}">G - Gobierno</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">N° Documento *</label>
+                                <input type="text" name="document_number" class="form-control bg-light border-0" required
+                                       th:value="${customer?.documentNumber}" placeholder="1234567890">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Teléfono</label>
+                                <input type="text" name="phone" class="form-control bg-light border-0"
+                                       th:value="${customer?.phone}" placeholder="3001234567">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Correo Electrónico</label>
+                                <input type="email" name="email" class="form-control bg-light border-0"
+                                       th:value="${customer?.email}" placeholder="cliente@email.com">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Ciudad</label>
+                                <input type="text" name="ciudad" class="form-control bg-light border-0"
+                                       th:value="${customer?.ciudad}" placeholder="Bogotá">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Dirección</label>
+                                <input type="text" name="address" class="form-control bg-light border-0"
+                                       th:value="${customer?.address}" placeholder="Cll 10 # 2-34">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">Departamento</label>
+                                <input type="text" name="departamento" class="form-control bg-light border-0"
+                                       th:value="${customer?.departamento}" placeholder="Valle del Cauca">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">País</label>
+                                <input type="text" name="pais" class="form-control bg-light border-0"
+                                       th:value="${customer?.pais ?: 'Colombia'}" placeholder="Colombia">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Tipo Persona *</label>
+                                <select name="tipo_persona" class="form-select bg-light border-0" required>
+                                    <option value="NATURAL" th:selected="${customer == null or customer.tipoPersona == 'NATURAL'}">Natural</option>
+                                    <option value="JURIDICA" th:selected="${customer?.tipoPersona == 'JURIDICA'}">Jurídica</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label small fw-bold text-secondary">Régimen Tributario *</label>
+                                <select name="regimen_tributario" class="form-select bg-light border-0" required>
+                                    <option value="NO_RESPONSABLE_IVA" th:selected="${customer == null or customer.regimenTributario == 'NO_RESPONSABLE_IVA'}">No Responsable de IVA</option>
+                                    <option value="RESPONSABLE_IVA" th:selected="${customer?.regimenTributario == 'RESPONSABLE_IVA'}">Responsable de IVA</option>
+                                    <option value="GRAN_CONTRIBUYENTE" th:selected="${customer?.regimenTributario == 'GRAN_CONTRIBUYENTE'}">Gran Contribuyente</option>
+                                    <option value="AUTORETENEDOR" th:selected="${customer?.regimenTributario == 'AUTORETENEDOR'}">Autoretenedor</option>
+                                    <option value="REGIMEN_SIMPLE" th:selected="${customer?.regimenTributario == 'REGIMEN_SIMPLE'}">Régimen Simple de Tributación</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end mt-4">
+                            <a th:href="@{/customer}" class="btn btn-light border px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i>
+                                <span th:text="${customer != null} ? 'Actualizar' : 'Guardar'">Guardar</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+</body>
+</html>

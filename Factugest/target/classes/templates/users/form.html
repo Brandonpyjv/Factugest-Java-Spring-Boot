@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${user != null} ? 'Editar Usuario' : 'Nuevo Usuario'">Usuario</title>
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="h3 mb-1 fw-bold">
+            <i th:class="${user != null} ? 'bi bi-person-pencil text-primary me-2' : 'bi bi-person-plus text-primary me-2'" class="bi text-primary me-2"></i>
+            <span th:text="${user != null} ? 'Editar Usuario' : 'Nuevo Usuario'">Usuario</span>
+        </h1>
+        <p class="text-muted small mb-0"
+           th:text="${user != null} ? 'Modifica los datos del usuario.' : 'Completa los datos para crear un nuevo usuario.'"></p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header bg-white py-3 border-bottom border-light">
+                    <h6 class="m-0 fw-bold text-primary">Datos del Usuario</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="${user != null} ? @{/users/edit/{id}(id=${user.codUsuario})} : @{/users/new}" method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Nombre Completo *</label>
+                            <input type="text" name="nombre" class="form-control bg-light border-0" required
+                                   th:value="${user?.nombre}" placeholder="Ej: Brandon Pérez">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Correo Electrónico *</label>
+                            <input type="email" name="correo" class="form-control bg-light border-0" required
+                                   th:value="${user?.correo}" placeholder="usuario@empresa.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">
+                                <span th:text="${user != null} ? 'Contraseña (dejar vacío para no cambiar)' : 'Contraseña *'">Contraseña</span>
+                            </label>
+                            <input type="password" name="contrasena" class="form-control bg-light border-0"
+                                   th:required="${user == null}" placeholder="••••••••">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-secondary">Rol *</label>
+                            <select name="rol" class="form-select bg-light border-0" required>
+                                <option value="">Seleccionar rol...</option>
+                                <option value="ADMIN" th:selected="${user?.rol == 'ADMIN'}">Administrador</option>
+                                <option value="CAJERO" th:selected="${user?.rol == 'CAJERO'}">Cajero</option>
+                                <option value="VENDEDOR" th:selected="${user?.rol == 'VENDEDOR'}">Vendedor</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a th:href="@{/users}" class="btn btn-light border px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i>
+                                <span th:text="${user != null} ? 'Actualizar' : 'Guardar'">Guardar</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+</body>
+</html>

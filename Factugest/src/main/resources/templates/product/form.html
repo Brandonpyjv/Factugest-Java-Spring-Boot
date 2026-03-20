@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${product != null} ? 'Editar Producto' : 'Nuevo Producto'">Producto</title>
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="h3 mb-1 fw-bold">
+            <i class="bi bi-box-seam text-primary me-2"></i>
+            <span th:text="${product != null} ? 'Editar Producto' : 'Nuevo Producto'">Producto</span>
+        </h1>
+        <p class="text-muted small mb-0"
+           th:text="${product != null} ? 'Modifica los datos del producto.' : 'Ingresa los datos del nuevo producto.'"></p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-9">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header bg-white py-3 border-bottom border-light">
+                    <h6 class="m-0 fw-bold text-primary">Información del Producto</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="${product != null} ? @{/products/product/edit/{id}(id=${product.codProducto})} : @{/products/product/new}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">SKU *</label>
+                                <input type="text" name="sku" class="form-control bg-light border-0 font-monospace" required
+                                       th:value="${product?.sku}" placeholder="TEC-001">
+                            </div>
+
+                            <div class="col-md-9">
+                                <label class="form-label small fw-bold text-secondary">Nombre del Producto *</label>
+                                <input type="text" name="nombre" class="form-control bg-light border-0" required
+                                       th:value="${product?.nombre}" placeholder="Ej: Teclado Mecánico RGB">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary">Descripción</label>
+                                <textarea name="descripcion" class="form-control bg-light border-0" rows="2"
+                                          placeholder="Descripción detallada del producto..."
+                                          th:text="${product?.descripcion}"></textarea>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">Precio Unitario *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0">$</span>
+                                    <input type="number" name="precio_unitario" class="form-control bg-light border-0" required
+                                           step="0.01" min="0" th:value="${product?.precioUnitario}" placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold text-secondary">Stock Actual</label>
+                                <input type="number" name="stock" class="form-control bg-light border-0" min="0"
+                                       th:value="${product?.stock ?: 0}">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold text-secondary">Stock Mínimo</label>
+                                <input type="number" name="stock_minimo" class="form-control bg-light border-0" min="0"
+                                       th:value="${product?.stockMinimo ?: 5}">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-secondary">Impuesto *</label>
+                                <select name="cod_impuesto" class="form-select bg-light border-0" required>
+                                    <option th:each="tax : ${taxes}"
+                                            th:value="${tax.codImpuesto}"
+                                            th:text="${tax.descripcion + ' (' + tax.porcentaje + '%)'}"
+                                            th:selected="${product != null and product.codImpuesto == tax.codImpuesto}"></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold text-secondary">Unidad Medida</label>
+                                <select name="unidad_medida" class="form-select bg-light border-0">
+                                    <option value="C62" th:selected="${product?.unidadMedida == 'C62'}">C62 - Unidad</option>
+                                    <option value="94" th:selected="${product?.unidadMedida == '94'}">94 - Unidad</option>
+                                    <option value="WSD" th:selected="${product?.unidadMedida == 'WSD'}">WSD - Servicio</option>
+                                    <option value="KGM" th:selected="${product?.unidadMedida == 'KGM'}">KGM - Kilogramo</option>
+                                    <option value="LTR" th:selected="${product?.unidadMedida == 'LTR'}">LTR - Litro</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Código de Barras</label>
+                                <input type="text" name="codigo_barras" class="form-control bg-light border-0 font-monospace"
+                                       th:value="${product?.codigoBarras}" placeholder="Opcional">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold text-secondary">Estado</label>
+                                <select name="activo" class="form-select bg-light border-0">
+                                    <option value="1" th:selected="${product == null or product.activo == 1}">Activo</option>
+                                    <option value="0" th:selected="${product != null and product.activo == 0}">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end mt-4">
+                            <a th:href="@{/products/product}" class="btn btn-light border px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i>
+                                <span th:text="${product != null} ? 'Actualizar' : 'Guardar'">Guardar</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+</body>
+</html>
