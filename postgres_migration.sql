@@ -41,11 +41,10 @@ CREATE TABLE IF NOT EXISTS impuestos (
 );
 
 -- tabla: customers
--- NOTA: document_type usa CHAR(1) para coincidir con @Column(columnDefinition = "char(1)") en la entidad
 CREATE TABLE IF NOT EXISTS customers (
     customer_id         SERIAL        PRIMARY KEY,
     full_name           VARCHAR(100)  NOT NULL,
-    document_type       CHAR(1)       NOT NULL,
+    document_type       VARCHAR(1)    NOT NULL,
     document_number     VARCHAR(20)   NOT NULL  UNIQUE,
     phone               VARCHAR(15),
     email               VARCHAR(100),

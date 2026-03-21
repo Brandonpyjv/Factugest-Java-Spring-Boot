@@ -9,24 +9,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * CRUD de clientes.
+ *
+ * El mismo formulario (customer/form.html) sirve tanto para crear como para editar.
+ * El truco: en el GET de /new ponemos customer=null en el modelo, y en el GET de
+ * /edit/{id} ponemos el objeto real. Thymeleaf usa th:field con el objeto y
+ * rellena los campos automáticamente cuando existe, o los deja vacíos cuando es null.
+ */
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
 
     @Autowired private CustomerService customerService;
 
+    /** Lista todos los clientes ordenados alfabéticamente. */
     @GetMapping
     public String list(Model model) {
         model.addAttribute("all_customers", customerService.getAll());
         return "customer/index";
     }
 
+    /** Formulario en blanco para crear un cliente nuevo. */
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("customer", null);
         return "customer/form";
     }
 
+    /**
+     * Persiste un nuevo cliente con los datos del formulario.
+     * Los campos opcionales (@RequestParam required=false) pueden venir vacíos
+     * desde el HTML sin causar error 400 Bad Request.
+     */
     @PostMapping("/new")
     public String create(
             @RequestParam String full_name,
@@ -54,9 +69,16 @@ public class CustomerController {
         c.setTipoPersona(tipo_persona);
         c.setRegimenTributario(regimen_tributario);
         customerService.save(c);
+
+        // Patrón POST-Redirect-GET: redirige al listado para evitar doble envío si el
+        // usuario recarga la página (el navegador pide un GET, no reenvía el POST).
         return "redirect:/customer";
     }
 
+    /**
+     * Formulario precargado con los datos del cliente a editar.
+     * Optional.isEmpty() protege contra IDs inventados en la URL.
+     */
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Integer id, Model model) {
         Optional<Customer> opt = customerService.getById(id);
@@ -65,6 +87,7 @@ public class CustomerController {
         return "customer/form";
     }
 
+    /** Actualiza los datos de un cliente existente. Mismo patrón que create. */
     @PostMapping("/edit/{id}")
     public String update(
             @PathVariable Integer id,
@@ -98,6 +121,7 @@ public class CustomerController {
         return "redirect:/customer";
     }
 
+    /** Elimina el cliente. En producción convendría verificar que no tenga facturas asociadas. */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         customerService.delete(id);

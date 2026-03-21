@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * CRUD de productos del catálogo.
+ *
+ * Al crear/editar un producto necesitamos la lista de impuestos disponibles
+ * (IVA 19%, exento, etc.) para el select del formulario. Por eso se inyecta
+ * ImpuestoService además de ProductoService.
+ */
 @Controller
 @RequestMapping("/products/product")
 public class ProductController {
@@ -18,12 +25,18 @@ public class ProductController {
     @Autowired private ProductoService productoService;
     @Autowired private ImpuestoService impuestoService;
 
+    /**
+     * Lista productos con nombre del impuesto y porcentaje incluidos (via JOIN en el servicio).
+     * Se usa getAllDetailed() que retorna Map en vez de entidades, porque necesitamos
+     * datos de la tabla impuestos que no están en la entidad Producto.
+     */
     @GetMapping
     public String list(Model model) {
         model.addAttribute("products", productoService.getAllDetailed());
         return "product/index";
     }
 
+    /** Formulario vacío. Los impuestos se cargan para poblar el <select>. */
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("product", null);
@@ -31,6 +44,11 @@ public class ProductController {
         return "product/form";
     }
 
+    /**
+     * Crea un nuevo producto en el catálogo.
+     * activo=1 por defecto: los productos se crean habilitados.
+     * unidad_medida="C62" es el código UNECE para "unidad" (estándar DIAN).
+     */
     @PostMapping("/new")
     public String create(
             @RequestParam String sku,
@@ -59,6 +77,7 @@ public class ProductController {
         return "redirect:/products/product";
     }
 
+    /** Formulario precargado con los datos del producto a modificar. */
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Integer id, Model model) {
         Optional<Producto> opt = productoService.getById(id);
@@ -68,6 +87,7 @@ public class ProductController {
         return "product/form";
     }
 
+    /** Actualiza todos los campos del producto. El SKU puede cambiarse (no es PK). */
     @PostMapping("/edit/{id}")
     public String update(
             @PathVariable Integer id,
@@ -99,6 +119,11 @@ public class ProductController {
         return "redirect:/products/product";
     }
 
+    /**
+     * Elimina el producto del catálogo.
+     * NOTA: Si el producto tiene facturas históricas referenciándolo, la FK de
+     * detalle_factura lo protege. En ese caso sería mejor marcarlo como activo=0.
+     */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         productoService.delete(id);
