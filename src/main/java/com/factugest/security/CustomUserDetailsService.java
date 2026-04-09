@@ -43,14 +43,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         String role = "ROLE_" + usuario.getRol().toUpperCase();
 
         // Devolvemos nuestro principal personalizado que extiende el User de Spring.
-        // Incluye nombre y rol extra (campos que no tiene el User estándar) para
-        // poder mostrarlos en la interfaz (ej: "Bienvenido, Brandon").
+        // Incluye nombre, rol, codUsuario y codEmpresa para que los controladores
+        // puedan usarlos sin volver a consultar la BD en cada request.
         return new CustomUserPrincipal(
                 usuario.getCorreo(),
                 usuario.getContrasena(),
                 List.of(new SimpleGrantedAuthority(role)),
                 usuario.getNombre(),
-                usuario.getRol()
+                usuario.getRol(),
+                usuario.getCodUsuario(),
+                usuario.getCodEmpresa()
         );
     }
 }

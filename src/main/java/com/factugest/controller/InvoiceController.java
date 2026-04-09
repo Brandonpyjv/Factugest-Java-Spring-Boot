@@ -1,8 +1,11 @@
 package com.factugest.controller;
 
+import com.factugest.entity.Empresa;
+import com.factugest.security.CustomUserPrincipal;
 import com.factugest.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +49,24 @@ public class InvoiceController {
     }
 
     /**
-     * Muestra el formulario de nueva factura precargado con todos los catálogos
-     * necesarios: empresas, métodos de pago, estados de pago y descuentos aplicables
-     * a nivel de factura. El formulario de productos se llena dinámicamente via AJAX.
+     * Muestra el formulario de nueva factura.
+     *
+     * La empresa emisora se preselecciona automáticamente según el usuario autenticado:
+     * se lee el cod_empresa del principal (que viene de la columna cod_empresa en usuarios).
+     * Si el usuario no tiene empresa asignada, se redirige con un mensaje de error.
      */
     @GetMapping("/new")
-    public String newInvoiceForm(Model model) {
-        model.addAttribute("empresas", empresaService.getAll());
+    public String newInvoiceForm(Model model, @AuthenticationPrincipal CustomUserPrincipal principal) {
+        Integer codEmpresa = principal.getCodEmpresa();
+        if (codEmpresa == null) {
+            // El usuario no tiene empresa asignada — el ADMIN debe asignarle una primero
+            return "redirect:/invoice?error=sin_empresa";
+        }
+        Empresa empresaUsuario = empresaService.getById(codEmpresa).orElse(null);
+        if (empresaUsuario == null) {
+            return "redirect:/invoice?error=empresa_invalida";
+        }
+        model.addAttribute("empresaUsuario", empresaUsuario);
         model.addAttribute("metodos_pago", metodoPagoService.getAll());
         model.addAttribute("pagos_factura", pagoFacturaService.getAll());
         model.addAttribute("invoice_discounts", invoiceService.getInvoiceDiscounts());
@@ -99,9 +113,8 @@ public class InvoiceController {
      */
     @PostMapping("/new")
     public String createInvoice(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
             @RequestParam Integer cod_cliente,
-            @RequestParam(required = false) Integer cod_usuario,
-            @RequestParam Integer cod_empresa,
             @RequestParam Integer cod_metodo_pago,
             @RequestParam Integer cod_pago,
             @RequestParam(defaultValue = "FV") String tipo_factura,
@@ -114,8 +127,10 @@ public class InvoiceController {
             @RequestParam(required = false) Integer cod_descuento_factura,
             @RequestParam(required = false) BigDecimal valor_descuento_factura) {
 
-        // Si no viene el usuario (sesión anónima temporal), usamos el ID 1 como fallback
-        int usuarioId = cod_usuario != null ? cod_usuario : 1;
+        // Usuario y empresa se obtienen del principal autenticado (sesión segura),
+        // no del formulario — evita que alguien manipule estos valores por POST.
+        int usuarioId  = principal.getCodUsuario();
+        int cod_empresa = principal.getCodEmpresa();
 
         // Acumuladores para los totales de la factura
         BigDecimal subtotalBruto = BigDecimal.ZERO;

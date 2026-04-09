@@ -23,19 +23,26 @@ public class CustomUserPrincipal extends User {
     private final String nombre;
     private final String rol;
 
+    // ID del usuario en BD — evita volver a consultar la BD en cada request.
+    private final Integer codUsuario;
+
+    // ID de la empresa asignada al usuario — usado para preseleccionar la empresa
+    // emisora en el formulario de nueva factura. Puede ser null para ADMIN sin empresa.
+    private final Integer codEmpresa;
+
     public CustomUserPrincipal(String username, String password,
                                Collection<? extends GrantedAuthority> authorities,
-                               String nombre, String rol) {
+                               String nombre, String rol,
+                               Integer codUsuario, Integer codEmpresa) {
         super(username, password, authorities);
         this.nombre = nombre;
         this.rol = rol;
+        this.codUsuario = codUsuario;
+        this.codEmpresa = codEmpresa;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getRol() {
-        return rol;
-    }
+    public String getNombre()      { return nombre; }
+    public String getRol()         { return rol; }
+    public Integer getCodUsuario() { return codUsuario; }
+    public Integer getCodEmpresa() { return codEmpresa; }
 }

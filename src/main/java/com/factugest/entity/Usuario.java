@@ -36,4 +36,10 @@ public class Usuario {
     // Rol en mayúsculas: "ADMIN" o "USER".
     // Spring Security lo convierte a "ROLE_ADMIN" o "ROLE_USER" internamente.
     private String rol;
+
+    // Empresa (sucursal) a la que pertenece el usuario.
+    // Determina qué empresa emisora se preselecciona al crear facturas.
+    // Nullable: usuarios ADMIN pueden no tener empresa asignada.
+    @Column(name = "cod_empresa")
+    private Integer codEmpresa;
 }

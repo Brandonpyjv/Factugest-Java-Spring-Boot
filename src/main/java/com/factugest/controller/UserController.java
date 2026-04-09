@@ -1,6 +1,7 @@
 package com.factugest.controller;
 
 import com.factugest.entity.Usuario;
+import com.factugest.service.EmpresaService;
 import com.factugest.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired private UsuarioService usuarioService;
+    @Autowired private EmpresaService empresaService;
 
     // El mismo encoder configurado en SecurityConfig (BCryptPasswordEncoder).
     // Inyectarlo aquí garantiza que usamos exactamente el mismo algoritmo que
@@ -37,6 +39,7 @@ public class UserController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("user", null);
+        model.addAttribute("empresas", empresaService.getAll());
         return "users/form";
     }
 
@@ -49,13 +52,15 @@ public class UserController {
             @RequestParam String nombre,
             @RequestParam String correo,
             @RequestParam(required = false) String contrasena,
-            @RequestParam String rol) {
+            @RequestParam String rol,
+            @RequestParam(required = false) Integer cod_empresa) {
 
         Usuario u = new Usuario();
         u.setNombre(nombre);
         u.setCorreo(correo);
         u.setContrasena(passwordEncoder.encode(contrasena));  // hashear antes de persistir
         u.setRol(rol);
+        u.setCodEmpresa(cod_empresa);
         usuarioService.save(u);
         return "redirect:/users";
     }
@@ -65,6 +70,7 @@ public class UserController {
         Optional<Usuario> opt = usuarioService.getById(id);
         if (opt.isEmpty()) return "redirect:/users";
         model.addAttribute("user", opt.get());
+        model.addAttribute("empresas", empresaService.getAll());
         return "users/form";
     }
 
@@ -79,7 +85,8 @@ public class UserController {
             @RequestParam String nombre,
             @RequestParam String correo,
             @RequestParam(required = false) String contrasena,
-            @RequestParam String rol) {
+            @RequestParam String rol,
+            @RequestParam(required = false) Integer cod_empresa) {
 
         Optional<Usuario> opt = usuarioService.getById(id);
         if (opt.isEmpty()) return "redirect:/users";
@@ -89,6 +96,7 @@ public class UserController {
         // Solo actualizar la contraseña si el admin ingresó una nueva
         if (contrasena != null && !contrasena.isEmpty()) u.setContrasena(passwordEncoder.encode(contrasena));
         u.setRol(rol);
+        u.setCodEmpresa(cod_empresa);
         usuarioService.save(u);
         return "redirect:/users";
     }

@@ -60,15 +60,16 @@
                                 </div>
                             </div>
 
-                            <!-- Empresa -->
+                            <!-- Empresa (preseleccionada según el usuario autenticado) -->
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-secondary">Empresa Emisora *</label>
-                                <select name="cod_empresa" class="form-select bg-light border-0" required>
-                                    <option value="" disabled selected>Seleccionar empresa...</option>
-                                    <option th:each="e : ${empresas}"
-                                            th:value="${e.codEmpresa}"
-                                            th:text="${e.nombre + ' — NIT ' + e.nit + (e.dv != null ? '-' + e.dv : '')}"></option>
-                                </select>
+                                <label class="form-label small fw-bold text-secondary">Empresa Emisora</label>
+                                <div class="form-control bg-light border-0 d-flex align-items-center gap-2"
+                                     style="font-size:0.88rem; min-height:38px;">
+                                    <i class="bi bi-building text-primary"></i>
+                                    <span class="fw-semibold"
+                                          th:text="${empresaUsuario.nombre + ' — NIT ' + empresaUsuario.nit + (empresaUsuario.dv != null ? '-' + empresaUsuario.dv : '')}"></span>
+                                </div>
+                                <input type="hidden" name="cod_empresa" th:value="${empresaUsuario.codEmpresa}">
                             </div>
 
                             <!-- Fechas: automáticas -->
