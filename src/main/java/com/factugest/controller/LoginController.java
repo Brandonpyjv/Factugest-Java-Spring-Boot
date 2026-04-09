@@ -18,4 +18,9 @@ public class LoginController {
     public String login() {
         return "login"; // resuelve a src/main/resources/templates/login.html
     }
+
+    @GetMapping("/logout-success")
+    public String logoutSuccess() {
+        return "logout"; // resuelve a src/main/resources/templates/logout.html
+    }
 }

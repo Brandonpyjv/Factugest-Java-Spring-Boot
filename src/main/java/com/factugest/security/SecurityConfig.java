@@ -43,7 +43,7 @@ public class SecurityConfig {
             // Reglas de autorización: quién puede acceder a qué URL
             .authorizeHttpRequests(auth -> auth
                 // Recursos estáticos y la página de login son públicos (no requieren sesión)
-                .requestMatchers("/css/**", "/img/**", "/js/**", "/login").permitAll()
+                .requestMatchers("/css/**", "/img/**", "/js/**", "/login", "/logout-success").permitAll()
                 // Gestión de usuarios y logs solo para ADMIN
                 .requestMatchers("/users/**", "/logs/**").hasRole("ADMIN")
                 // Todo lo demás requiere estar autenticado
@@ -63,7 +63,7 @@ public class SecurityConfig {
             // Configuración del logout
             .logout(logout -> logout
                 .logoutUrl("/logout")                       // POST a /logout ejecuta el logout
-                .logoutSuccessUrl("/login?logout=true")     // redirige al login con mensaje de éxito
+                .logoutSuccessUrl("/logout-success")        // redirige a la página de sesión cerrada
                 .invalidateHttpSession(true)                // destruye la sesión HTTP del servidor
                 .clearAuthentication(true)                  // elimina el principal del contexto de seguridad
                 .permitAll()
