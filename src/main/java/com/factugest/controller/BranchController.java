@@ -9,6 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * CRUD de empresas emisoras de facturas ("branches" = sucursales).
+ *
+ * En un sistema multi-empresa, cada empresa tiene su propio NIT y se registra
+ * aquí. Al crear una factura, el usuario elige cuál empresa la emite.
+ * El nombre "branches" viene de la concepción original del sistema donde una
+ * empresa podía tener múltiples sucursales, cada una con su propio registro.
+ */
 @Controller
 @RequestMapping("/branches")
 public class BranchController {
@@ -27,6 +35,11 @@ public class BranchController {
         return "branches/form";
     }
 
+    /**
+     * Registra una nueva empresa emisora.
+     * regimen_tributario por defecto = RESPONSABLE_IVA (las empresas generalmente cobran IVA).
+     * tipo_documento por defecto = NIT (estándar para personas jurídicas en Colombia).
+     */
     @PostMapping("/new")
     public String create(
             @RequestParam String nombre,

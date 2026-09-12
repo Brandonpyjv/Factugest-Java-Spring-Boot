@@ -9,7 +9,7 @@ Sistema de facturación electrónica para Colombia, construido con **Java 21 + S
 - [¿Qué es Factugest?](#qué-es-factugest)
 - [Tecnologías](#tecnologías)
 - [Requisitos previos](#requisitos-previos)
-- [Configuración de la base de datos](#configuración-de-la-base-de-datos)
+- [Configuración de la base de datos](#configuración-de-la-base-de-datos) (Docker recomendado)
 - [Variables de entorno](#variables-de-entorno)
 - [Cómo arrancar el proyecto](#cómo-arrancar-el-proyecto)
 - [Acceder a la aplicación](#acceder-a-la-aplicación)
@@ -81,7 +81,66 @@ El proyecto incluye el **Maven Wrapper** (`mvnw` / `mvnw.cmd`). Solo necesitas t
 
 ## Configuración de la base de datos
 
-### Paso 1 — Crear la base de datos en PostgreSQL
+Tienes dos opciones para levantar PostgreSQL. **Docker es la más fácil** si no quieres instalar nada.
+
+---
+
+### Opción A — Con Docker (recomendado)
+
+Requiere tener instalado **Docker Desktop** (Windows/Mac) o **Docker Engine** (Linux).
+
+#### Paso 1 — Crear el archivo `.env`
+
+En la raíz del proyecto crea un archivo llamado `.env` con este contenido:
+
+```
+DB_PASSWORD=tu_contraseña_aqui
+```
+
+> Este archivo está en `.gitignore` — no se sube al repositorio.
+
+#### Paso 2 — Levantar el contenedor
+
+```bash
+docker compose up -d
+```
+
+Esto crea automáticamente la base de datos `factugest`, ejecuta el script `postgres_migration.sql` (crea todas las tablas) y deja PostgreSQL corriendo en `localhost:5432`.
+
+#### Paso 3 — Cargar los datos de ejemplo
+
+```bash
+docker exec -i postgresy psql -U postgres -d factugest < reseed_data.sql
+```
+
+#### Comandos útiles
+
+```bash
+# Si el contenedor ya existe y solo quieres iniciarlo
+docker start postgresy
+
+# Detener el contenedor (los datos se conservan)
+docker stop postgresy
+
+# Volver a arrancar con docker compose
+docker compose start
+
+# Ver los logs de PostgreSQL
+docker compose logs postgres
+
+# Borrar el contenedor Y todos los datos (irreversible)
+docker compose down -v
+```
+
+> **Los datos persisten** entre reinicios del contenedor. Solo se pierden si usas `down -v`.
+
+Una vez levantado el contenedor, **salta directamente a la sección [Variables de entorno](#variables-de-entorno)** para configurar Spring Boot.
+
+---
+
+### Opción B — PostgreSQL instalado localmente
+
+#### Paso 1 — Crear la base de datos en PostgreSQL
 
 Abre pgAdmin o psql y ejecuta:
 

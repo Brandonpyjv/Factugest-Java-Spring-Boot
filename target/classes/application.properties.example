@@ -1,0 +1,23 @@
+# ============================================================
+#  Factugest — application.properties.example
+#
+#  Este archivo documenta todas las variables de entorno que
+#  necesita el proyecto. NUNCA pongas valores reales aquí.
+#
+#  Cómo usarlo:
+#    1. Copia este archivo como referencia.
+#    2. Define las variables en tu entorno local (IntelliJ,
+#       shell, Docker, etc.) con los valores reales.
+#    3. NO crees una copia con contraseñas y la subas a Git.
+# ============================================================
+
+# ── Base de datos PostgreSQL ───────────────────────────────
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=factugest
+DB_USERNAME=postgres
+DB_PASSWORD=tu_contraseña_aqui
+
+# ── Servidor ───────────────────────────────────────────────
+# Opcional — por defecto usa 8080
+SERVER_PORT=8080

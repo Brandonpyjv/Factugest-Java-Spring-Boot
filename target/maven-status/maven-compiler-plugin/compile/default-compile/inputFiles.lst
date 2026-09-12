@@ -1,52 +1,52 @@
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\BranchController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\CustomerController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\DiscountController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\HomeController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\InvoiceController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\InvoicePaymentController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\LogController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\LoginController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\PaymentMethodController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\ProductController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\ProductDiscountController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\TaxController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\controller\UserController.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Customer.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Descuento.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\DetalleFactura.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Empresa.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Factura.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Impuesto.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Log.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\MetodoPago.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\PagoFactura.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Producto.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\entity\Usuario.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\FactugestApplication.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\CustomerRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\DescuentoRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\DetalleFacturaRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\EmpresaRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\FacturaRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\ImpuestoRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\LogRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\MetodoPagoRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\PagoFacturaRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\ProductoRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\repository\UsuarioRepository.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\security\CustomUserDetailsService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\security\CustomUserPrincipal.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\security\PasswordMigrationRunner.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\security\SecurityConfig.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\CustomerService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\DescuentoService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\EmpresaService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\ImpuestoService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\InvoiceService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\LogService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\MetodoPagoService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\PagoFacturaService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\PdfService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\ProductDiscountService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\ProductoService.java
-D:\01. Proyectos\Factugest Java Actualizado\Factugest Java\src\main\java\com\factugest\service\UsuarioService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/FactugestApplication.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/BranchController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/CustomerController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/DiscountController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/HomeController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/InvoiceController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/InvoicePaymentController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/LogController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/LoginController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/PaymentMethodController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/ProductController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/ProductDiscountController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/TaxController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/controller/UserController.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Customer.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Descuento.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/DetalleFactura.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Empresa.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Factura.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Impuesto.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Log.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/MetodoPago.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/PagoFactura.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Producto.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/entity/Usuario.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/CustomerRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/DescuentoRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/DetalleFacturaRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/EmpresaRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/FacturaRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/ImpuestoRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/LogRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/MetodoPagoRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/PagoFacturaRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/ProductoRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/repository/UsuarioRepository.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/security/CustomUserDetailsService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/security/CustomUserPrincipal.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/security/PasswordMigrationRunner.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/security/SecurityConfig.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/CustomerService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/DescuentoService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/EmpresaService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/ImpuestoService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/InvoiceService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/LogService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/MetodoPagoService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/PagoFacturaService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/PdfService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/ProductDiscountService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/ProductoService.java
+/home/brandon/Proyects/Factugest-Java-Spring-Boot/src/main/java/com/factugest/service/UsuarioService.java
